@@ -3,6 +3,10 @@ const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool(process.env.DATABASE_URL);
 
+// Check open connections on server
+// SHOW VARIABLES LIKE 'max_connections';
+// SHOW STATUS WHERE `variable_name` = 'Threads_connected';
+
 // Test connection
 async function mysqlConnect() {
   try {
@@ -10,6 +14,8 @@ async function mysqlConnect() {
     console.log(`- Connected to ${db.config.database} on ${db.config.host}`);
   } catch (err) {
     console.error('Database connection error:', err.message);
+  } finally {
+    pool.end();
   }
 }
 
@@ -22,6 +28,8 @@ async function query(sql) {
     return { rows, fields };
   } catch (error) {
     throw new Error(error);
+  } finally {
+    pool.end();
   }
 }
 
@@ -34,6 +42,8 @@ async function execute(sql, params) {
     return { rows, fields };
   } catch (error) {
     throw new Error(error);
+  } finally {
+    pool.end();
   }
 }
 
