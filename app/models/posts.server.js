@@ -1,4 +1,4 @@
-import { query, execute } from '../config/db.server';
+import { query, execute } from '../config/db.server.js';
 
 export async function getPosts() {
   const { rows } = await query('SELECT * FROM posts');
