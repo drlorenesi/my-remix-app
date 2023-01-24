@@ -15,7 +15,6 @@ import Button from 'react-bootstrap/Button';
 // Utils
 import validate from '~/utils/validate.server';
 
-// Yup validation Schema
 const validationSchema = Yup.object({
   email: Yup.string()
     .matches(
@@ -23,7 +22,6 @@ const validationSchema = Yup.object({
       'Por favor usa tu correo de "@deltafrio.com"'
     )
     .required('Campo obligatorio.'),
-  pass: Yup.string().required('Campo obligatorio.'),
 });
 
 export const action = async ({ request }) => {
@@ -32,8 +30,8 @@ export const action = async ({ request }) => {
   // If there are 'fieldErrors', return 'result'
   if (result?.status === 400) return result;
   // Get field data
-  const { email, pass } = result.fields;
-  console.log({ email, pass });
+  const { email } = result.fields;
+  console.log({ email });
   return null;
 };
 
@@ -46,7 +44,11 @@ export default function Login() {
   return (
     <>
       <div className='login-form'>
-        <h2 className='text-center p-2'>Iniciar Sesión</h2>
+        <h2 className='text-center p-2'>¿Olvidaste tu contraseña?</h2>
+        <p className='text-center text-muted'>
+          Por favor ingresa el correo electrónico que usaste para crear tu
+          cuenta.
+        </p>
         <Form as={RemixForm} noValidate method='post'>
           {/* Email */}
           <Form.Group className='mb-3'>
@@ -64,33 +66,16 @@ export default function Login() {
               <small>{actionData?.fieldErrors?.email}</small>
             </div>
           </Form.Group>
-          {/* Password */}
-          <Form.Group className='mb-3'>
-            <Form.Control
-              type='password'
-              name='pass'
-              placeholder='Contraseña'
-              defaultValue={actionData?.fields?.pass}
-              isInvalid={!!actionData?.fieldErrors?.pass}
-            />
-            <div className='text-danger'>
-              <small>{actionData?.fieldErrors?.pass}</small>
-            </div>
-          </Form.Group>
           <div className='d-grid'>
             <Button type='submit' disabled={isSubmitting}>
-              {isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
+              {isSubmitting ? 'Solicitando reinicio...' : 'Solicitar reinicio'}
             </Button>
           </div>
         </Form>
-        {/* Link para registro */}
-        <br />
-        <p className='text-center'>
-          ¿No tienes cuenta? <Link to='/registro'>Registrate aquí.</Link>
-        </p>
       </div>
+      {/* Link para inicio de sesión */}
       <p className='text-center'>
-        <Link to='/solicitar'>¿Olvidaste tu contraseña?</Link>
+        ¿Ya tienes cuenta? <Link to='/login'>Inicia sesión aquí.</Link>
       </p>
     </>
   );

@@ -61,8 +61,8 @@ export default function NewPost() {
       <Row>
         <Col lg={6} md={6} sm={6}>
           <Form as={RemixForm} method='POST'>
+            {/* Title */}
             <Form.Group className='mb-3'>
-              {/* Title */}
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type='text'
